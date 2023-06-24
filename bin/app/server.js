@@ -3,6 +3,7 @@ const wrapper = require('../helpers/utils/wrapper');
 const bodyParser = require('body-parser');
 const mongoConnectionPooling = require('../helpers/databases/mongodb/connection');
 const express = require('express');
+const contactListHandler = require('../modules/contactList/handlers/api_handler');
 
 function AppServer() {
     this.server = express();
@@ -18,6 +19,11 @@ function AppServer() {
 
     //Routing
     //this.server.{post/get/put/delete}
+    this.server.post('/contact-list', contactListHandler.inputContact);
+    this.server.get('/contact-list/view', contactListHandler.getAllContact);
+    this.server.get('/contact-list/view/:id', contactListHandler.getOneContact);
+    this.server.put('/contact-list/view/:id', contactListHandler.updateContact);
+    this.server.delete('/contact-list/view/:id', contactListHandler.deleteContact);
 
     // exception handling
     this.server.use((error, req, res, next) => {
