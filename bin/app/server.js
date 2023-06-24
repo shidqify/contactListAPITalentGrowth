@@ -18,11 +18,10 @@ function AppServer() {
     });
 
     //Routing
-    //this.server.{post/get/put/delete}
     this.server.post('/contact-list', contactListHandler.inputContact);
     this.server.get('/contact-list/view', contactListHandler.getContact);
     this.server.put('/contact-list/view', contactListHandler.updateContact);
-    this.server.delete('/contact-list/view/:id', contactListHandler.deleteContact);
+    this.server.delete('/contact-list/view', contactListHandler.deleteContact);
 
     // exception handling
     this.server.use((error, req, res, next) => {

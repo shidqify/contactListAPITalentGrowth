@@ -16,6 +16,12 @@ class Command {
     });
     return result;
   }
+
+  async deleteContact(numberPhone) {
+    this.db.setCollection('contact-info');
+    const result = await this.db.deleteOne({ numberPhone });
+    return result;
+  }
 }
 
 module.exports = Command;

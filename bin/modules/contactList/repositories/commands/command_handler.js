@@ -14,3 +14,9 @@ module.exports.updateContact = async (numberPhone, payload) => {
   const putCommand = async (numberPhone, payload) => await contact.updateContact(numberPhone, payload);
   return await putCommand(numberPhone, payload);
 }
+
+module.exports.deleteContact = async (numberPhone) => {
+  const contact = new Contact(db);
+  const deleteCommand = async (numberPhone) => await contact.deleteContact(numberPhone);
+  return await deleteCommand(numberPhone);
+}

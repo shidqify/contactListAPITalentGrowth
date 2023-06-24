@@ -44,6 +44,17 @@ class Contact {
     return wrapper.data(result.data);
 
   }
+
+  async deleteContact(numberPhone) {
+    const contact = await this.query.findOneContact({ numberPhone });
+    if (!contact.data) {
+      console.log('Contact didn\'t exist');
+      return wrapper.error(new NotFoundError('Contact didn\'t exist'));
+    }
+
+    const result = await this.command.deleteContact(numberPhone);
+    return wrapper.data(result.data);
+  }
 }
 
 module.exports = Contact;
