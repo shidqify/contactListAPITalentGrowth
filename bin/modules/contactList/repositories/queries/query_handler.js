@@ -12,4 +12,15 @@ module.exports.getAllContact = async () => {
 
   const result = await getData();
   return result;
+};
+
+module.exports.getOneContact = async (numberPhone) => {
+  const contact = new Contact(db);
+  const getData = async (numberPhone) => {
+    const result = await contact.getOneContact(numberPhone);
+    return result;
+  }
+
+  const result = await getData(numberPhone);
+  return result;
 }
