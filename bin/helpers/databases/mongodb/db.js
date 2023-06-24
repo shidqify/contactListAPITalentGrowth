@@ -1,6 +1,7 @@
 const validate = require('validate.js');
 const wrapper = require('../../utils/wrapper');
 const { MongoClient } = require('mongodb');
+const { BadRequestError } = require('../../error');
 
 class DB {
   constructor(config) {
@@ -113,11 +114,11 @@ class DB {
       // const cacheConnection = result.data.db;
       const connection = this.client.db(dbName);
       const db = connection.collection(this.collectionName);
-      const data = await db.update(parameter, updateQuery, { upsert: true });
-      if (data.result.nModified >= 0) {
-        const { result: { nModified } } = data;
+      const data = await db.updateOne(parameter, updateQuery, { upsert: true });
+      if (data.modifiedCount >= 0) {
+        const { modifiedCount } = data;
         const recordset = await this.findOne(parameter);
-        if (nModified === 0) {
+        if (modifiedCount === 0) {
           return wrapper.data(recordset.data);
         }
         return wrapper.data(recordset.data);
@@ -125,7 +126,7 @@ class DB {
       return wrapper.error('Failed upsert data');
     } catch (err) {
       console.log(err.message, 'Error upsert data in mongodb')
-      return wrapper.error(`Error Upsert Mongo ${err.message}`);
+      return wrapper.error(new BadRequestError(`Error Upsert Mongo ${err.message}`));
     }
 
   }
