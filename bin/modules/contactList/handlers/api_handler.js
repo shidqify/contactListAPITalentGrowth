@@ -21,13 +21,22 @@ module.exports.inputContact = async (req, res) => {
   sendResponse(await postRequest(validatePayload));
 };
 
-module.exports.getAllContact = async (req, res) => {
-  const getData = async () => queryHandler.getAllContact();
+module.exports.getContact = async (req, res) => {
+  const numberPhone = req.query.numberPhone;
+
+  const getData = async (numberPhone) => {
+    let result;
+    (numberPhone)
+      ? result = queryHandler.getOneContact(numberPhone)
+      : result = queryHandler.getAllContact();
+    return result;
+  };
+
   const sendResponse = async (result) => {
     (result.err)
       ? wrapper.response(res, 'fail', result, 'Failed to get all contact', 400)
       : wrapper.response(res, 'success', result, 'Success get all contact', 200);
   };
 
-  sendResponse(await getData());
+  sendResponse(await getData(numberPhone));
 };

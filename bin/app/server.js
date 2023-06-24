@@ -20,8 +20,7 @@ function AppServer() {
     //Routing
     //this.server.{post/get/put/delete}
     this.server.post('/contact-list', contactListHandler.inputContact);
-    this.server.get('/contact-list/view', contactListHandler.getAllContact);
-    this.server.get('/contact-list/view/:id', contactListHandler.getOneContact);
+    this.server.get('/contact-list/view', contactListHandler.getContact);
     this.server.put('/contact-list/view/:id', contactListHandler.updateContact);
     this.server.delete('/contact-list/view/:id', contactListHandler.deleteContact);
 
