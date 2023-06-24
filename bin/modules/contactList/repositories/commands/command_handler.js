@@ -5,6 +5,12 @@ const db = new Mongo(config.get('/mongoDbUrl'));
 
 module.exports.inputContact = async (payload) => {
   const contact = new Contact(db);
-  const postCommand = async payload => contact.inputContact(payload);
-  return postCommand(payload);
+  const postCommand = async payload => await contact.inputContact(payload);
+  return await postCommand(payload);
+}
+
+module.exports.updateContact = async (numberPhone, payload) => {
+  const contact = new Contact(db);
+  const putCommand = async (numberPhone, payload) => await contact.updateContact(numberPhone, payload);
+  return await putCommand(numberPhone, payload);
 }

@@ -3,6 +3,9 @@ const validator = require('../utils/validator');
 const { inputData } = require('../repositories/commands/command_model');
 const commandHandler = require('../repositories/commands/command_handler');
 const queryHandler = require('../repositories/queries/query_handler');
+const _ = require('lodash');
+const { BadRequestError } = require('../../../helpers/error');
+const { result } = require('validate.js');
 
 module.exports.inputContact = async (req, res) => {
   const payload = req.body;
@@ -40,3 +43,24 @@ module.exports.getContact = async (req, res) => {
 
   sendResponse(await getData(numberPhone));
 };
+
+module.exports.updateContact = async (req, res) => {
+  const numberPhone = req.query.numberPhone;
+  const payload = req.body;
+
+  if (_.isEmpty(numberPhone)) {
+    return wrapper.error(new BadRequestError('numberPhone cannot be empty'));
+  }
+
+  const putRequest = async (numberPhone, payload) => {
+    return commandHandler.updateContact(numberPhone, payload);
+  };
+
+  const sendResponse = async (result) => {
+    (result.err)
+      ? wrapper.response(res, 'fail', result, 'Failed to update contact', 400)
+      : wrapper.response(res, 'success', result, 'Success update contact', 200);
+  };
+
+  sendResponse(await putRequest(numberPhone, payload));
+}

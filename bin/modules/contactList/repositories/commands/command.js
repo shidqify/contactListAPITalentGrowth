@@ -8,6 +8,14 @@ class Command {
     const result = await this.db.insertOne(payload);
     return result;
   }
+
+  async updateContact(numberPhone, payload) {
+    this.db.setCollection('contact-info');
+    const result = await this.db.upsertOne({ numberPhone }, {
+      $set: payload 
+    });
+    return result;
+  }
 }
 
 module.exports = Command;

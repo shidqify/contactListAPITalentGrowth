@@ -1,7 +1,7 @@
 const Query = require('../queries/query');
 const Command = require('./command');
 const wrapper = require('../../../../helpers/utils/wrapper');
-const { ConflictError } = require('../../../../helpers/error');
+const { ConflictError, NotFoundError } = require('../../../../helpers/error');
 
 class Contact {
   constructor(db) {
@@ -31,6 +31,18 @@ class Contact {
     })
 
     return wrapper.data(result.data);
+  };
+
+  async updateContact(numberPhone, payload) {
+    const contact = await this.query.findOneContact({ numberPhone });
+    if (!contact.data) {
+      console.log('Contact didn\'t exist');
+      return wrapper.error(new NotFoundError('Contact didn\'t exist'));
+    }
+
+    const result = await this.command.updateContact(numberPhone, payload);
+    return wrapper.data(result.data);
+
   }
 }
 
